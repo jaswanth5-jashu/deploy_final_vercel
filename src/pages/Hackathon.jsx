@@ -1,3 +1,4 @@
+/*
 import React, { useMemo, useState, useRef, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import "../css/hackathon.css";
@@ -132,7 +133,7 @@ try {
   };
   return (
     <div className="hackathon-page">
-      {/* ================= HERO ================= */}
+    
       <section className="hack-hero">
         <div className="container text-center hack-box">
           <div className="hack-badge">
@@ -176,17 +177,16 @@ try {
         </div>
       </section>
 
-      {/* ================= REGISTRATION ================= */}
       <section ref={registrationRef} className="reg-sec py-5">
         <div className="container">
           <div className="text-center mb-5">
             <h2 className="reg-title">Team Registration</h2>
             <p className="reg-sub">Register your team for the hackathon (2–6 members)</p>
-            {/* ✅ API URL text removed */}
+           
           </div>
 
           <form onSubmit={handleSubmit}>
-            {/* TEAM NAME */}
+          
             <div className="reg-card mb-4">
               <label className="form-label">
                 Team Name <span className="text-danger">*</span>
@@ -200,7 +200,7 @@ try {
               />
             </div>
 
-            {/* TEAM LEADER */}
+          
             <div className="reg-card mb-4">
               <div className="d-flex align-items-center gap-2 mb-3">
                 <i className="bi bi-person-badge fs-5" />
@@ -298,7 +298,7 @@ try {
               </div>
             </div>
 
-            {/* MEMBERS */}
+            
             {members.map((m, idx) => (
               <div key={idx} className="reg-card mem-card mb-4">
                 <button
@@ -407,7 +407,7 @@ try {
               </div>
             ))}
 
-            {/* ADD MEMBER */}
+           
             {canAdd && (
               <div
                 className="add-mem"
@@ -423,7 +423,7 @@ try {
               </div>
             )}
 
-            {/* SUBMIT */}
+          
             <div className="text-center mt-4">
               <button type="submit" className="btn btn-primary px-5" disabled={submitting}>
                 {submitting ? "Submitting..." : "Submit Registration"}
@@ -433,7 +433,7 @@ try {
         </div>
       </section>
 
-      {/* ================= STATS ================= */}
+     
       <section className="stats-sec">
         <div className="container">
           <div className="row g-4 text-center">
@@ -464,7 +464,7 @@ try {
         </div>
       </section>
 
-      {/* ================= RULES MODAL ================= */}
+     
       {showRules && (
         <div className="rules-overlay" onClick={closeRules} role="dialog" aria-modal="true">
           <div className="rules-modal" onClick={(e) => e.stopPropagation()}>
@@ -494,6 +494,24 @@ try {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+*/
+
+export default function Hackathon() {
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontSize: "32px",
+        fontWeight: "bold",
+      }}
+    >
+      Coming Soon
     </div>
   );
 }
