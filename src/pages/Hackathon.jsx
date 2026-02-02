@@ -1,8 +1,8 @@
 import React, { useMemo, useState, useRef, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import "../css/hackathon.css";
+import { submitHackathonForm } from "../services/hackapi.js";
 
-const API_URL = "http://127.0.0.1:8000/api/hackathon/";
 
 const MAX_MEMBERS = 6;
 const MIN_MEMBERS = 2;
@@ -23,40 +23,33 @@ const emptyMember = () => ({
 export default function Hackathon() {
   const registrationRef = useRef(null);
 
-  // rules modal
   const [showRules, setShowRules] = useState(false);
 
-  // form
   const [teamName, setTeamName] = useState("");
   const [leader, setLeader] = useState(emptyMember());
   const [members, setMembers] = useState([]);
 
-  // ui states
   const [submitting, setSubmitting] = useState(false);
 
   const memberCount = useMemo(() => 1 + members.length, [members.length]);
   const canAdd = memberCount < MAX_MEMBERS;
 
   const scrollToRegistration = () => {
-    if (registrationRef.current) {
-      registrationRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    registrationRef.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   };
 
   const openRules = () => setShowRules(true);
   const closeRules = () => setShowRules(false);
 
-  // esc close modal
   useEffect(() => {
-    const onKeyDown = (e) => {
-      if (e.key === "Escape") closeRules();
-    };
-
+    const onKeyDown = (e) => e.key === "Escape" && closeRules();
     if (showRules) window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [showRules]);
 
-  // prevent bg scroll when modal open
   useEffect(() => {
     document.body.style.overflow = showRules ? "hidden" : "";
     return () => {
@@ -92,9 +85,8 @@ export default function Hackathon() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // enforce 2–6 members
     if (memberCount < MIN_MEMBERS) {
-      alert("Team must have at least 2 members (Leader + 1 Member).");
+      alert("Team must have at least 2 members.");
       return;
     }
 
@@ -119,35 +111,25 @@ export default function Hackathon() {
       total_participants: memberCount,
     };
 
-    try {
-      setSubmitting(true);
+try {
+  setSubmitting(true);
 
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+  const success = await submitHackathonForm(payload);
 
-      const contentType = res.headers.get("content-type") || "";
-      const data = contentType.includes("application/json") ? await res.json() : null;
+  if (success) {
+    alert("🎉 Registration successful!");
+    resetForm();
+  } else {
+    alert("Registration failed ❌");
+  }
+} catch (err) {
+  console.error("Network/Server error:", err);
+  alert("Registration failed ❌");
+} finally {
+  setSubmitting(false);
+}
 
-      if (!res.ok) {
-        console.error("API error:", data || res.statusText);
-        alert((data && data.message) || "Registration failed ❌ (Check console)");
-        return;
-      }
-
-      console.log("Registered Successfully ✅", data);
-      alert("🎉 Registration successful!");
-      resetForm();
-    } catch (err) {
-      console.error("Network/Server error:", err);
-      alert("Server not reachable ❌");
-    } finally {
-      setSubmitting(false);
-    }
   };
-
   return (
     <div className="hackathon-page">
       {/* ================= HERO ================= */}
