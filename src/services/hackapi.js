@@ -1,11 +1,15 @@
-import api from "./api";
+import { apiRequest } from "./api.js";
 
 export const submitHackathonForm = async (payload) => {
   try {
-    const res = await api.post("/hackathon/", payload);
-    return res.status === 201 || res.status === 200;
+    await apiRequest("/hackathon/", {
+      method: "POST",
+      body: JSON.stringify(payload),
+    });
+
+    return true;
   } catch (error) {
-    console.error("Hackathon API error:", error.response?.data || error.message);
+    console.error("Hackathon API error:", error);
     return false;
   }
 };
